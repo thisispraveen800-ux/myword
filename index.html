@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>For You 💜 | Golden Elegance</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,700&family=Cinzel:wght@400;600;700&family=Tenor+Sans&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden;background:#0A0718}
+body{font-family:'Tenor Sans',sans-serif;cursor:none;display:flex;align-items:stretch}
+
+/* CURSOR */
+.cur-dot,.cur-ring{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);display:none}
+@media(hover:hover){.cur-dot,.cur-ring{display:block}}
+.cur-dot{width:5px;height:5px;background:#FFD966;box-shadow:0 0 12px #FFB347}
+.cur-ring{width:32px;height:32px;border:1.5px solid rgba(255,200,100,0.7);transition:all .22s}
+
+/* BACKGROUND */
+#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+.bg-base{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 75% 55% at 20% 25%, rgba(45,20,55,0.92) 0%, transparent 70%),
+    radial-gradient(ellipse 65% 80% at 85% 70%, rgba(80,35,45,0.88) 0%, transparent 70%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, #110B1E 0%, #0A0718 100%)
+}
+
+.glow-orange{position:fixed;z-index:2;pointer-events:none;
+  width:750px;height:500px;
+  background:radial-gradient(ellipse, rgba(255,180,60,0.22) 0%,transparent 70%);
+  bottom:-80px;left:-180px;
+  animation:glowPulse 7s ease-in-out infinite alternate;
+  filter:blur(40px)
+}
+.glow-lav{position:fixed;z-index:2;pointer-events:none;
+  width:650px;height:650px;
+  background:radial-gradient(ellipse, rgba(210,130,230,0.18) 0%,transparent 70%);
+  top:-150px;right:-120px;
+  animation:glowPulse 9s ease-in-out infinite alternate-reverse;
+  filter:blur(45px)
+}
+.glow-gold{position:fixed;z-index:2;pointer-events:none;
+  width:550px;height:350px;
+  background:radial-gradient(ellipse, rgba(255,200,80,0.14) 0%,transparent 70%);
+  top:40%;left:50%;transform:translate(-50%,-50%);
+  animation:glowPulse 11s ease-in-out infinite alternate;
+  filter:blur(55px)
+}
+@keyframes glowPulse{0%{opacity:0.5;transform:scale(1)}100%{opacity:1;transform:scale(1.2)}}
+
+.bg-grid{position:fixed;inset:0;z-index:3;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,200,100,0.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,200,100,0.05) 1px,transparent 1px);
+  background-size:55px 55px
+}
+
+/* FLOATING GOLDEN HEARTS */
+.floaters{position:fixed;inset:0;z-index:4;pointer-events:none;overflow:hidden}
+@keyframes riseHeart{
+  0%{transform:translateY(100vh) rotate(0deg) scale(0.4);opacity:0}
+  10%{opacity:0.9}
+  90%{opacity:0.8}
+  100%{transform:translateY(-15vh) rotate(18deg) scale(0.7);opacity:0}
+}
+
+/* PANELS */
+.left-panel{width:48%;height:100vh;position:relative;z-index:10;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.right-panel{width:52%;height:100vh;position:relative;z-index:10;display:flex;align-items:center;justify-content:center}
+
+.divider{position:fixed;left:48%;top:6%;height:88%;width:1px;z-index:11;
+  background:linear-gradient(to bottom,transparent, rgba(255,200,100,0.6) 20%, rgba(255,160,80,0.8) 50%, rgba(255,200,100,0.6) 80%,transparent);
+  pointer-events:none
+}
+.divider::after{content:'💛';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  color:#FFD966;font-size:0.9rem;text-shadow:0 0 18px #FFB347;
+  animation:gemGlow 2s ease-in-out infinite alternate
+}
+@keyframes gemGlow{0%{opacity:0.7}100%{opacity:1}}
+
+/* PHOTO CARD - ENLARGED */
+.card-scene{perspective:1300px}
+.photo-card-wrap{
+  transform-style:preserve-3d;
+  transition:transform .12s ease;
+  animation:cardRise 1s cubic-bezier(.22,1,.36,1) both;
+  display:flex;flex-direction:column;align-items:center;gap:28px
+}
+@keyframes cardRise{from{opacity:0;transform:translateY(55px) rotateX(12deg)}to{opacity:1;transform:translateY(0) rotateX(0)}}
+
+.photo-card{
+  position:relative;width:380px;
+  border-radius:26px;overflow:visible;
+}
+
+.card-ring{
+  position:absolute;inset:-3px;border-radius:28px;z-index:0;
+  background:linear-gradient(135deg,#FFB347,#FFD966,#FFB347,#FFA559,#FFD966);
+  background-size:300%;
+  animation:ringFlow 4s linear infinite;
+  filter:blur(8px);opacity:0.9
+}
+.card-ring-solid{
+  position:absolute;inset:-1.5px;border-radius:27px;z-index:1;
+  background:linear-gradient(135deg,rgba(255,180,70,0.6),rgba(255,210,110,0.5),rgba(255,180,70,0.6));
+  background-size:300%;
+  animation:ringFlow 4s linear infinite;
+}
+@keyframes ringFlow{0%{background-position:0%}100%{background-position:300%}}
+
+.card-inner{
+  position:relative;z-index:2;border-radius:24px;overflow:hidden;
+  background:linear-gradient(145deg,#191034 0%,#130C28 50%,#1B1138 100%);
+  box-shadow:0 40px 90px rgba(0,0,0,0.9),0 12px 35px rgba(255,180,60,0.3),inset 0 1px 0 rgba(255,215,140,0.12);
+}
+
+.pc-strip{height:4px;background:linear-gradient(90deg,#FFB347,#FFE0A3,#FFD966,#FFE0A3,#FFB347);background-size:300%;animation:ringFlow 3s linear infinite}
+
+.pc-header{
+  padding:16px 20px 14px;
+  background:rgba(255,255,245,0.04);
+  border-bottom:1px solid rgba(255,200,100,0.2);
+  display:flex;align-items:center;justify-content:space-between
+}
+.pch-brand{font-family:'Great Vibes',cursive;font-size:1.5rem;color:#FFE0A3;text-shadow:0 0 24px rgba(255,180,60,0.8);display:flex;align-items:center;gap:10px}
+.pch-dots{display:flex;gap:6px}
+.pchd{width:8px;height:8px;border-radius:50%;animation:dotGlow 2.4s ease-in-out infinite}
+.pchd1{background:#FFB347;box-shadow:0 0 10px #FFB347;animation-delay:0s}
+.pchd2{background:#FFD966;box-shadow:0 0 10px #FFD966;animation-delay:.4s}
+.pchd3{background:#FFA559;box-shadow:0 0 10px #FFA559;animation-delay:.8s}
+@keyframes dotGlow{0%,100%{transform:scale(1);opacity:0.6}50%{transform:scale(1.6);opacity:1}}
+.pch-tag{font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:#FFD966;border:1px solid rgba(255,200,100,0.5);border-radius:50px;padding:5px 14px;background:rgba(255,180,60,0.1)}
+
+.pc-image{position:relative;height:500px;overflow:hidden;background:linear-gradient(145deg,#0D0820,#16102E,#0F0A26)}
+.pc-image img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:brightness(0.92) saturate(1.1) contrast(1.02)}
+.pc-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,7,24,0.96) 0%,rgba(10,7,24,0.2) 50%,transparent 100%)}
+.pc-shimmer{position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,200,100,0.1) 50%,transparent 70%);animation:shimmer 6s ease-in-out infinite}
+@keyframes shimmer{0%,100%{transform:translateX(-100%)}50%{transform:translateX(200%)}}
+
+.pc-art{display:none;width:100%;height:100%;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.pca-icon{font-size:4.2rem;animation:iconFloat 3s ease-in-out infinite}
+@keyframes iconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.pca-txt{font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,230,170,0.4);text-align:center}
+
+.pc-name-layer{position:absolute;bottom:0;left:0;right:0;z-index:5;padding:24px 22px 20px}
+.pcnl-name{font-family:'Great Vibes',cursive;font-size:3.4rem;background:linear-gradient(135deg,#FFFFFF,#FFE0A3,#FFB347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 28px rgba(255,180,60,0.7));line-height:1.1}
+.pcnl-divider{display:flex;align-items:center;gap:12px;margin:6px 0 6px}
+.pcnd-line{height:1.5px;flex:0 0 32px;background:linear-gradient(90deg,transparent,rgba(255,200,100,0.7))}
+.pcnd-line.r{background:linear-gradient(90deg,rgba(255,200,100,0.7),transparent)}
+.pcnd-gem{color:#FFD966;font-size:0.7rem;text-shadow:0 0 10px #FFB347}
+.pcnl-sub{font-size:0.58rem;letter-spacing:0.24em;text-transform:uppercase;color:rgba(255,220,140,0.8);font-weight:400}
+
+.pc-footer{padding:16px 22px;background:rgba(255,255,245,0.02);border-top:1px solid rgba(255,200,100,0.15);display:flex;align-items:center;justify-content:space-between}
+.pcf-ed{font-size:0.48rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,200,100,0.6);margin-bottom:4px}
+.pcf-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:#FFF8E7}
+.pcf-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.72rem;color:rgba(255,210,120,0.7);margin-top:2px}
+.pcf-heart{font-size:1.8rem;animation:heartBeat 1.5s ease-in-out infinite;filter:drop-shadow(0 0 8px #FFB347)}
+@keyframes heartBeat{0%,100%{transform:scale(1)}15%{transform:scale(1.28)}30%{transform:scale(1)}}
+
+.pc-gems{position:absolute;inset:-28px;z-index:20;pointer-events:none}
+.gem{position:absolute;border-radius:50%;animation:gemPulse 2.5s ease-in-out infinite}
+.gm1{width:12px;height:12px;background:#FFD966;box-shadow:0 0 18px #FFB347;top:8px;right:24px}
+.gm2{width:9px;height:9px;background:#FFB347;box-shadow:0 0 16px #FFB347;left:-6px;top:110px;animation-delay:.6s}
+.gm3{width:10px;height:10px;background:#FFA559;box-shadow:0 0 14px #FFA559;right:-6px;bottom:120px;animation-delay:1.2s}
+.gm4{width:8px;height:8px;background:#FFE0A3;box-shadow:0 0 14px #FFE0A3;bottom:12px;left:44px;animation-delay:.3s}
+@keyframes gemPulse{0%,100%{transform:scale(1);opacity:0.6}50%{transform:scale(2.8);opacity:1}}
+
+.photo-quote{font-family:'Great Vibes',cursive;font-size:1.3rem;text-align:center;background:linear-gradient(135deg,rgba(255,200,100,0.9),rgba(255,160,90,0.8));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:2;max-width:320px;animation:cardRise 1s .45s cubic-bezier(.22,1,.36,1) both}
+
+/* PASSWORD CARD */
+.login-wrap{position:relative}
+.login-ring{position:absolute;inset:-2px;border-radius:30px;z-index:0;background:linear-gradient(135deg,#FFB347,#FFD966,#FFA559,#FFB347);background-size:300%;animation:ringFlow 5s linear infinite;filter:blur(10px);opacity:0.45}
+.login-card{position:relative;z-index:1;width:min(450px,90vw);background:linear-gradient(145deg,rgba(25,15,48,0.94) 0%,rgba(18,12,38,0.96) 100%);border:1px solid rgba(255,200,100,0.3);border-radius:28px;padding:44px 38px 36px;backdrop-filter:blur(32px);box-shadow:0 0 0 1px rgba(255,180,70,0.1),0 45px 100px rgba(0,0,0,0.8),0 12px 35px rgba(255,180,60,0.2),inset 0 1px 0 rgba(255,235,180,0.1);animation:cardRise 1s .2s cubic-bezier(.22,1,.36,1) both}
+.login-card::before{content:'';position:absolute;top:0;left:20px;right:20px;height:2px;background:linear-gradient(90deg,transparent,#FFD966,#FFE0A3,#FFB347,#FFD966,transparent);background-size:300%;animation:ringFlow 3.5s linear infinite;box-shadow:0 0 18px rgba(255,180,60,0.5)}
+
+.lc-c{position:absolute;width:16px;height:16px;pointer-events:none}
+.lc-c::before,.lc-c::after{content:'';position:absolute;background:rgba(255,200,100,0.5)}
+.lcc-tl{top:12px;left:12px}.lcc-tl::before{top:0;left:0;width:100%;height:1.5px}.lcc-tl::after{top:0;left:0;width:1.5px;height:100%}
+.lcc-tr{top:12px;right:12px}.lcc-tr::before{top:0;right:0;width:100%;height:1.5px}.lcc-tr::after{top:0;right:0;width:1.5px;height:100%}
+.lcc-bl{bottom:12px;left:12px}.lcc-bl::before{bottom:0;left:0;width:100%;height:1.5px}.lcc-bl::after{bottom:0;left:0;width:1.5px;height:100%}
+.lcc-br{bottom:12px;right:12px}.lcc-br::before{bottom:0;right:0;width:100%;height:1.5px}.lcc-br::after{bottom:0;right:0;width:1.5px;height:100%}
+
+.card-badge{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(255,180,60,0.12),rgba(255,210,100,0.08));border:1px solid rgba(255,200,100,0.35);border-radius:60px;padding:7px 22px;font-size:0.55rem;letter-spacing:0.3em;color:#FFDFA5;text-transform:uppercase;margin-bottom:28px;font-weight:600}
+.bp{width:6px;height:6px;border-radius:50%;background:#FFD966;box-shadow:0 0 12px #FFB347;animation:dotGlow 1.8s ease-in-out infinite}
+
+.card-heading{margin-bottom:30px;text-align:center}
+.ch-eye{font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:rgba(255,210,110,0.7);margin-bottom:10px}
+.ch-main{font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:700;font-style:italic;background:linear-gradient(135deg,#fff 0%,#FFE0A3 35%,#FFB347 70%,#FFD966 100%);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradShift 4s ease-in-out infinite alternate;display:block;filter:drop-shadow(0 0 20px rgba(255,180,60,0.5))}
+@keyframes gradShift{0%{background-position:0%}100%{background-position:100%}}
+.ch-name{font-family:'Great Vibes',cursive;font-size:1.8rem;background:linear-gradient(135deg,#FFE0A3,#FFB347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;margin-top:6px;filter:drop-shadow(0 0 12px rgba(255,180,60,0.6))}
+.ch-div{display:flex;align-items:center;gap:15px;justify-content:center;margin:14px 0}
+.chdl{height:1.5px;flex:0 0 45px;background:linear-gradient(90deg,transparent,rgba(255,200,100,0.5))}
+.chdl.r{background:linear-gradient(90deg,rgba(255,200,100,0.5),transparent)}
+.ch-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.98rem;color:rgba(255,240,190,0.55);line-height:1.85}
+
+.input-display{width:100%;height:60px;background:rgba(8,5,20,0.7);border:1px solid rgba(255,200,100,0.25);border-radius:18px;display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:20px;transition:border-color .3s;box-shadow:inset 0 2px 12px rgba(0,0,0,0.5)}
+.input-display.active{border-color:rgba(255,200,100,0.7);box-shadow:0 0 0 4px rgba(255,180,60,0.1),0 0 30px rgba(255,180,60,0.2),inset 0 2px 12px rgba(0,0,0,0.5)}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,220,0.08);border:1.5px solid rgba(255,220,140,0.2);transition:all .22s}
+.dot.on{background:linear-gradient(135deg,#FFD966,#FFB347);border:none;box-shadow:0 0 16px rgba(255,180,60,0.9);animation:dotPop .22s cubic-bezier(.34,1.56,.64,1)}
+@keyframes dotPop{from{transform:scale(0.2)}to{transform:scale(1)}}
+.dot.err{background:linear-gradient(135deg,#FFA07A,#FF8C42);border:none;box-shadow:0 0 14px rgba(255,140,66,0.9);animation:shake .38s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.key{height:56px;border-radius:16px;background:linear-gradient(145deg,rgba(255,250,210,0.07),rgba(255,240,180,0.02));border:1px solid rgba(255,210,110,0.2);color:#FFE8C7;font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;cursor:pointer;transition:all .16s;display:flex;align-items:center;justify-content:center;user-select:none;box-shadow:inset 0 1px 0 rgba(255,245,180,0.1),0 5px 14px rgba(0,0,0,0.4)}
+.key:hover{border-color:rgba(255,200,100,0.6);color:#FFF0C0;transform:translateY(-3px) scale(1.02);box-shadow:0 0 24px rgba(255,180,60,0.3),0 12px 28px rgba(0,0,0,0.5)}
+.key:active{transform:scale(0.94)}
+.key-del{background:linear-gradient(145deg,rgba(255,200,100,0.12),rgba(255,180,60,0.05));border-color:rgba(255,200,100,0.3);color:#FFDAA5;font-family:'Tenor Sans',sans-serif;font-size:1.1rem}
+.key-enter{background:linear-gradient(135deg,rgba(255,180,60,0.25),rgba(255,160,80,0.2));border-color:rgba(255,200,100,0.5);color:#FFE8B0;font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;font-weight:600;box-shadow:0 0 28px rgba(255,180,60,0.2)}
+
+.err-msg{display:none;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.95rem;color:rgba(255,210,140,0.9);padding:12px 16px;background:rgba(255,180,60,0.1);border:1px solid rgba(255,200,100,0.35);border-radius:14px;animation:fadeUp .3s ease}
+.err-msg.show{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.card-hint{text-align:center;font-size:0.5rem;letter-spacing:0.24em;color:rgba(255,220,140,0.3);text-transform:uppercase;margin-top:16px}
+
+.unlock-screen{position:fixed;inset:0;z-index:2000;background:radial-gradient(ellipse at 40% 50%,#301A3A,#0E0820);display:none;align-items:center;justify-content:center;flex-direction:column;gap:24px}
+.unlock-screen.show{display:flex;animation:unlockIn .7s ease both}
+@keyframes unlockIn{from{opacity:0;transform:scale(1.05)}to{opacity:1;transform:scale(1)}}
+.ul-icon{font-size:5rem;animation:ulPop .9s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes ulPop{from{transform:scale(0) rotate(-15deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.ul-title{font-family:'Great Vibes',cursive;font-size:3.2rem;background:linear-gradient(135deg,#fff,#FFE0A3,#FFB347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;padding:0 28px;animation:fadeUp .8s .3s both}
+.ul-sub{font-size:0.68rem;letter-spacing:0.32em;text-transform:uppercase;color:rgba(255,220,130,0.8);animation:fadeUp .8s .5s both}
+.ul-dots{display:flex;gap:15px;animation:fadeUp .8s .7s both}
+.ul-dot{width:10px;height:10px;border-radius:50%;animation:dotBounce .9s ease-in-out infinite}
+.ul-dot:nth-child(1){background:#FFD966;box-shadow:0 0 14px #FFB347}
+.ul-dot:nth-child(2){background:#FFB347;box-shadow:0 0 14px #FFB347;animation-delay:.22s}
+.ul-dot:nth-child(3){background:#FFA559;box-shadow:0 0 14px #FFA559;animation-delay:.44s}
+@keyframes dotBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+.music-btn{position:fixed;top:22px;right:22px;z-index:600;background:rgba(20,12,40,0.8);border:1px solid rgba(255,200,100,0.4);border-radius:60px;padding:10px 22px;color:rgba(255,220,130,0.9);font-size:0.58rem;cursor:pointer;font-family:'Cinzel',serif;transition:all .25s;letter-spacing:0.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px;backdrop-filter:blur(24px)}
+.music-btn:hover{background:rgba(255,180,60,0.12);border-color:rgba(255,200,100,0.7);color:#FFE2A5}
+.mdot{width:6px;height:6px;border-radius:50%;background:#FFD966;box-shadow:0 0 10px #FFB347;animation:dotGlow 1.8s ease-in-out infinite}
+
+@media(max-width:900px){
+  body{flex-direction:column;overflow-y:auto;height:auto;min-height:100vh}
+  .left-panel,.right-panel{width:100%;height:auto}
+  .left-panel{padding:30px 0 15px}
+  .right-panel{padding:15px 0 40px}
+  .card-scene,.photo-card{width:300px}
+  .pc-image{height:400px}
+  .pcnl-name{font-size:2.7rem}
+  .login-card{width:92%;padding:32px 22px 30px}
+  .key{height:52px;font-size:1.4rem}
+  .photo-quote{display:none}
+  .divider{display:none}
+}
+@media(max-width:420px){.key{height:48px;font-size:1.2rem}.ch-main{font-size:2rem}}
+</style>
+</head>
+<body>
+
+<div class="cur-dot" id="cd"></div>
+<div class="cur-ring" id="cr"></div>
+
+<canvas id="bgCanvas"></canvas>
+<div class="bg-base"></div>
+<div class="glow-orange"></div>
+<div class="glow-lav"></div>
+<div class="glow-gold"></div>
+<div class="bg-grid"></div>
+<div class="floaters" id="floaters"></div>
+<div class="divider"></div>
+
+<div class="unlock-screen" id="unlockScreen">
+  <div class="ul-icon">💛✨</div>
+  <div class="ul-title">Welcome, Nana 💜</div>
+  <div class="ul-sub">Opening your golden surprise…</div>
+  <div class="ul-dots"><div class="ul-dot"></div><div class="ul-dot"></div><div class="ul-dot"></div></div>
+</div>
+
+<button class="music-btn" id="mBtn">
+  <div class="mdot"></div>
+  <span id="mBtnTxt">Music</span>
+</button>
+<audio id="bgAudio" loop preload="auto">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" type="audio/mpeg">
+</audio>
+
+<!-- LEFT PANEL -->
+<div class="left-panel">
+  <div class="card-scene" id="cardScene">
+    <div class="photo-card-wrap" id="photoWrap">
+      <div class="photo-card">
+        <div class="card-ring"></div>
+        <div class="card-ring-solid"></div>
+        <div class="card-inner">
+          <div class="pc-strip"></div>
+          <div class="pc-header">
+            <div class="pch-brand">
+              <div class="pch-dots"><div class="pchd pchd1"></div><div class="pchd pchd2"></div><div class="pchd pchd3"></div></div>
+              Captured
+            </div>
+            <div class="pch-tag">Birthday 2025</div>
+          </div>
+          <div class="pc-image">
+            <img src="index.jpg" alt="Chandana" onerror="this.style.display='none';document.getElementById('pcArt').style.display='flex'">
+            <div class="pc-img-overlay"></div>
+            <div class="pc-shimmer"></div>
+            <div class="pc-art" id="pcArt">
+              <div class="pca-icon">🌸💛</div>
+              <div class="pca-txt">Place your photo here<br>src="index.jpg"</div>
+            </div>
+            <div class="pc-name-layer">
+              <div class="pcnl-name">Chandana</div>
+              <div class="pcnl-divider"><div class="pcnd-line"></div><span class="pcnd-gem">💛</span><div class="pcnd-line r"></div></div>
+              <div class="pcnl-sub">My most beautiful person</div>
+            </div>
+          </div>
+          <div class="pc-footer">
+            <div><div class="pcf-ed">✦ Special Edition · 2025</div><div class="pcf-title">Happy Birthday</div><div class="pcf-sub">Forever cherished, always loved</div></div>
+            <div class="pcf-heart">💛</div>
+          </div>
+        </div>
+        <div class="pc-gems"><div class="gem gm1"></div><div class="gem gm2"></div><div class="gem gm3"></div><div class="gem gm4"></div></div>
+      </div>
+      <div class="photo-quote">In every universe, in every lifetime —<br>I would always find you 💛</div>
+    </div>
+  </div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="right-panel">
+  <div class="login-wrap">
+    <div class="login-ring"></div>
+    <div class="login-card">
+      <div class="lc-c lcc-tl"></div><div class="lc-c lcc-tr"></div>
+      <div class="lc-c lcc-bl"></div><div class="lc-c lcc-br"></div>
+      <div style="display:flex;justify-content:center"><div class="card-badge"><div class="bp"></div>Something Special Awaits ✦</div></div>
+      <div class="card-heading">
+        <div class="ch-eye">✦ Enter Your Secret Code ✦</div>
+        <span class="ch-main">Happy Birthday</span>
+        <span class="ch-name">Nana 💜</span>
+        <div class="ch-div"><div class="chdl"></div><span style="color:rgba(255,200,100,0.6);font-size:.7rem">💛</span><div class="chdl r"></div></div>
+        <div class="ch-sub">Enter our secret code to step<br>into your world of surprises</div>
+      </div>
+      <div class="input-display" id="inputDisplay">
+        <div class="dot" id="d0"></div><div class="dot" id="d1"></div><div class="dot" id="d2"></div><div class="dot" id="d3"></div><div class="dot" id="d4"></div>
+        <div class="dot" id="d5"></div><div class="dot" id="d6"></div><div class="dot" id="d7"></div><div class="dot" id="d8"></div><div class="dot" id="d9"></div>
+      </div>
+      <div class="keypad">
+        <button class="key" data-num="1">1</button>
+        <button class="key" data-num="2">2</button>
+        <button class="key" data-num="3">3</button>
+        <button class="key" data-num="4">4</button>
+        <button class="key" data-num="5">5</button>
+        <button class="key" data-num="6">6</button>
+        <button class="key" data-num="7">7</button>
+        <button class="key" data-num="8">8</button>
+        <button class="key" data-num="9">9</button>
+        <button class="key key-del" id="delBtn">⌫</button>
+        <button class="key" data-num="0">0</button>
+        <button class="key key-enter" id="enterBtn">Unlock ✦</button>
+      </div>
+      <div class="err-msg" id="errMsg">Not quite right Gunduuuu 🥺 — try again 💛</div>
+      <div class="card-hint">Tap numbers · enter your secret code · unlock birthday</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// PASSWORD SYSTEM
+const PWD = '9515618291';
+let entered = '';
+let errShown = false;
+
+// DOM elements
+const inputDisplay = document.getElementById('inputDisplay');
+const errMsg = document.getElementById('errMsg');
+
+// Create dot elements array
+const dots = [];
+for(let i = 0; i < 10; i++) {
+    dots.push(document.getElementById('d' + i));
+}
+
+function updateDots() {
+    for(let i = 0; i < 10; i++) {
+        if(i < entered.length) {
+            dots[i].className = 'dot on';
+        } else {
+            dots[i].className = 'dot';
+        }
+    }
+}
+
+// BUTTON CLICK SOUND (typing sound)
+function playTypingSound() {
+    try {
+        const a = getAudioContext();
+        const o = a.createOscillator();
+        const g = a.createGain();
+        o.connect(g);
+        g.connect(a.destination);
+        o.type = 'sine';
+        // Random pitch between 600-800Hz for variety
+        const pitch = 600 + Math.random() * 200;
+        o.frequency.value = pitch;
+        g.gain.setValueAtTime(0.08, a.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.06);
+        o.start();
+        o.stop(a.currentTime + 0.06);
+    } catch(e) { console.log('Typing sound error:', e); }
+}
+
+// DELETE SOUND
+function playDeleteSound() {
+    try {
+        const a = getAudioContext();
+        const o = a.createOscillator();
+        const g = a.createGain();
+        o.connect(g);
+        g.connect(a.destination);
+        o.type = 'sine';
+        o.frequency.value = 400;
+        g.gain.setValueAtTime(0.07, a.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.08);
+        o.start();
+        o.stop(a.currentTime + 0.08);
+    } catch(e) { console.log('Delete sound error:', e); }
+}
+
+// UNLOCK SUCCESS SOUND (more celebratory)
+function playUnlockSound() {
+    try {
+        const a = getAudioContext();
+        // Play a beautiful ascending arpeggio for unlock
+        const notes = [523, 659, 784, 1047, 1319, 1568];
+        notes.forEach(function(freq, index) {
+            const o = a.createOscillator();
+            const g = a.createGain();
+            o.connect(g);
+            g.connect(a.destination);
+            o.type = 'sine';
+            o.frequency.value = freq;
+            const startTime = a.currentTime + index * 0.08;
+            g.gain.setValueAtTime(0, startTime);
+            g.gain.linearRampToValueAtTime(0.15, startTime + 0.03);
+            g.gain.exponentialRampToValueAtTime(0.001, startTime + 0.35);
+            o.start(startTime);
+            o.stop(startTime + 0.4);
+        });
+        
+        // Add a shimmering sound effect
+        const shimmer = a.createOscillator();
+        const shimmerGain = a.createGain();
+        shimmer.connect(shimmerGain);
+        shimmerGain.connect(a.destination);
+        shimmer.type = 'triangle';
+        shimmer.frequency.value = 2093;
+        shimmerGain.gain.setValueAtTime(0, a.currentTime + 0.2);
+        shimmerGain.gain.linearRampToValueAtTime(0.08, a.currentTime + 0.28);
+        shimmerGain.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.6);
+        shimmer.start(a.currentTime + 0.2);
+        shimmer.stop(a.currentTime + 0.65);
+    } catch(e) { console.log('Unlock sound error:', e); }
+}
+
+function press(num) {
+    if(entered.length >= 10) return;
+    playTypingSound(); // Play typing sound on each button press
+    entered += num;
+    updateDots();
+    errMsg.classList.remove('show');
+    errShown = false;
+    inputDisplay.classList.add('active');
+    
+    if(entered.length === 10) {
+        setTimeout(verify, 300);
+    }
+}
+
+function del() {
+    if(entered.length === 0) return;
+    playDeleteSound(); // Play delete sound
+    entered = entered.slice(0, -1);
+    updateDots();
+    errMsg.classList.remove('show');
+    errShown = false;
+    if(entered.length === 0) {
+        inputDisplay.classList.remove('active');
+    }
+}
+
+function verify() {
+    if(entered === PWD) {
+        playUnlockSound(); // Play unlock sound on success
+        successSound();
+        document.getElementById('unlockScreen').classList.add('show');
+        // Stop music before redirect
+        if(bgAudio) {
+            bgAudio.pause();
+            bgPlaying = false;
+        }
+        // Redirect to gallery.html after 2.5 seconds (let unlock sound play)
+        setTimeout(function() {
+            window.location.href = 'gallery.html';
+        }, 2500);
+    } else {
+        if(!errShown) {
+            errShown = true;
+            errMsg.classList.add('show');
+            for(let i = 0; i < entered.length; i++) {
+                dots[i].className = 'dot err';
+            }
+            errorSound();
+            setTimeout(function() {
+                entered = '';
+                updateDots();
+                errShown = false;
+                inputDisplay.classList.remove('active');
+            }, 1200);
+        }
+    }
+}
+
+// Attach event listeners to buttons
+document.querySelectorAll('.key[data-num]').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        press(this.getAttribute('data-num'));
+    });
+});
+
+document.getElementById('delBtn').addEventListener('click', function(e) {
+    e.stopPropagation();
+    del();
+});
+
+document.getElementById('enterBtn').addEventListener('click', function(e) {
+    e.stopPropagation();
+    verify();
+});
+
+// Keyboard support
+document.addEventListener('keydown', function(e) {
+    if(e.key >= '0' && e.key <= '9') {
+        press(e.key);
+    } else if(e.key === 'Backspace') {
+        del();
+    } else if(e.key === 'Enter') {
+        verify();
+    }
+});
+
+// CURSOR
+const cd = document.getElementById('cd');
+const cr = document.getElementById('cr');
+let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
+
+document.addEventListener('mousemove', function(e) {
+    mx = e.clientX;
+    my = e.clientY;
+    cd.style.left = mx + 'px';
+    cd.style.top = my + 'px';
+});
+
+(function loop() {
+    rx += (mx - rx) * 0.1;
+    ry += (my - ry) * 0.1;
+    cr.style.left = rx + 'px';
+    cr.style.top = ry + 'px';
+    requestAnimationFrame(loop);
+})();
+
+// AUDIO CONTEXT
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx = null;
+
+function getAudioContext() {
+    if(!actx) actx = new AudioCtx();
+    return actx;
+}
+
+function clickSound() {
+    try {
+        const a = getAudioContext();
+        const o = a.createOscillator();
+        const g = a.createGain();
+        o.connect(g);
+        g.connect(a.destination);
+        o.type = 'sine';
+        o.frequency.value = 880;
+        g.gain.setValueAtTime(0.05, a.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.09);
+        o.start();
+        o.stop(a.currentTime + 0.09);
+    } catch(e) { console.log('Audio error:', e); }
+}
+
+function errorSound() {
+    try {
+        const a = getAudioContext();
+        const o = a.createOscillator();
+        const g = a.createGain();
+        o.connect(g);
+        g.connect(a.destination);
+        o.type = 'triangle';
+        o.frequency.value = 210;
+        g.gain.setValueAtTime(0.07, a.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.42);
+        o.start();
+        o.stop(a.currentTime + 0.42);
+    } catch(e) { console.log('Audio error:', e); }
+}
+
+function successSound() {
+    try {
+        const a = getAudioContext();
+        const notes = [523, 659, 784, 1047, 1319];
+        notes.forEach(function(f, i) {
+            const o = a.createOscillator();
+            const g = a.createGain();
+            o.connect(g);
+            g.connect(a.destination);
+            o.type = 'triangle';
+            o.frequency.value = f;
+            const t = a.currentTime + i * 0.12;
+            g.gain.setValueAtTime(0, t);
+            g.gain.linearRampToValueAtTime(0.1, t + 0.04);
+            g.gain.exponentialRampToValueAtTime(0.001, t + 0.48);
+            o.start(t);
+            o.stop(t + 0.55);
+        });
+    } catch(e) { console.log('Audio error:', e); }
+}
+
+// Music player
+const bgAudio = document.getElementById('bgAudio');
+let bgPlaying = false;
+const mBtn = document.getElementById('mBtn');
+const mBtnTxt = document.getElementById('mBtnTxt');
+
+function toggleBgMusic() {
+    getAudioContext();
+    if(bgPlaying) {
+        bgAudio.pause();
+        bgPlaying = false;
+        mBtnTxt.textContent = 'Music';
+    } else {
+        bgAudio.play().catch(function(e) { console.log('Audio play error:', e); });
+        bgPlaying = true;
+        mBtnTxt.textContent = 'Pause';
+    }
+}
+
+mBtn.addEventListener('click', toggleBgMusic);
+
+// Auto-start music on first user interaction
+function autoStartMusic() {
+    if(!bgPlaying) {
+        bgAudio.volume = 0.26;
+        bgAudio.play().then(function() {
+            bgPlaying = true;
+            mBtnTxt.textContent = 'Pause';
+        }).catch(function() {});
+    }
+    document.removeEventListener('click', autoStartMusic);
+    document.removeEventListener('touchstart', autoStartMusic);
+}
+document.addEventListener('click', autoStartMusic);
+document.addEventListener('touchstart', autoStartMusic);
+
+// CANVAS BACKGROUND
+const cv = document.getElementById('bgCanvas');
+const ctx = cv.getContext('2d');
+
+function resizeCanvas() {
+    cv.width = window.innerWidth;
+    cv.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const starColors = [[255,200,100],[255,220,130],[255,180,70],[255,240,150],[210,150,255]];
+const stars = [];
+for(let i = 0; i < 240; i++) {
+    stars.push({
+        x: Math.random() * cv.width,
+        y: Math.random() * cv.height,
+        r: Math.random() * 0.8 + 0.15,
+        op: Math.random(),
+        spd: Math.random() * 0.005 + 0.001,
+        col: starColors[Math.floor(Math.random() * starColors.length)]
+    });
+}
+
+const bokeh = [];
+for(let i = 0; i < 20; i++) {
+    bokeh.push({
+        x: Math.random() * cv.width,
+        y: Math.random() * cv.height,
+        r: Math.random() * 70 + 25,
+        op: Math.random() * 0.1 + 0.03,
+        phase: Math.random() * Math.PI * 2,
+        col: [[255,180,70],[255,210,100],[220,150,230]][Math.floor(Math.random() * 3)]
+    });
+}
+
+let shoots = [];
+function newShoot() {
+    return {
+        x: Math.random() * cv.width * 0.7,
+        y: Math.random() * cv.height * 0.4,
+        len: Math.random() * 110 + 60,
+        spd: Math.random() * 11 + 7,
+        angle: Math.PI * 0.2 + Math.random() * 0.15,
+        life: 1,
+        decay: 0.02 + Math.random() * 0.018
+    };
+}
+for(let i = 0; i < 4; i++) shoots.push(newShoot());
+
+function drawCanvas() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    
+    bokeh.forEach(function(b) {
+        b.phase += b.spd;
+        const a = b.op * (0.6 + 0.4 * Math.sin(b.phase));
+        const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+        grad.addColorStop(0, `rgba(${b.col[0]}, ${b.col[1]}, ${b.col[2]}, ${a})`);
+        grad.addColorStop(1, `rgba(${b.col[0]}, ${b.col[1]}, ${b.col[2]}, 0)`);
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+    });
+    
+    stars.forEach(function(s) {
+        s.op += s.spd;
+        if(s.op > 1) {
+            s.op = 0;
+            s.x = Math.random() * cv.width;
+            s.y = Math.random() * cv.height;
+        }
+        const a = Math.sin(s.op * Math.PI);
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${s.col[0]}, ${s.col[1]}, ${s.col[2]}, ${a})`;
+        ctx.fill();
+        if(s.r > 0.6 && a > 0.6) {
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r * 3.5, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${s.col[0]}, ${s.col[1]}, ${s.col[2]}, ${a * 0.07})`;
+            ctx.fill();
+        }
+    });
+    
+    shoots.forEach(function(s, i) {
+        s.life -= s.decay;
+        if(s.life <= 0) {
+            shoots[i] = newShoot();
+            return;
+        }
+        const ex = s.x + Math.cos(s.angle) * s.len;
+        const ey = s.y + Math.sin(s.angle) * s.len;
+        const grad = ctx.createLinearGradient(s.x, s.y, ex, ey);
+        grad.addColorStop(0, `rgba(255,240,150,0)`);
+        grad.addColorStop(0.6, `rgba(255,210,100,${s.life * 0.6})`);
+        grad.addColorStop(1, `rgba(255,255,210,${s.life * 0.9})`);
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(ex, ey);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(ex, ey, 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,220,120,${s.life})`;
+        ctx.fill();
+        s.x += Math.cos(s.angle) * s.spd;
+        s.y += Math.sin(s.angle) * s.spd;
+    });
+    
+    requestAnimationFrame(drawCanvas);
+}
+drawCanvas();
+
+// FLOATING GOLDEN HEARTS
+const floatersDiv = document.getElementById('floaters');
+const goldHearts = ['💛','💛','💛','💖','✨','🌟','⭐','💛','💛','💛'];
+
+function spawnHeart() {
+    const el = document.createElement('div');
+    const heart = goldHearts[Math.floor(Math.random() * goldHearts.length)];
+    const size = Math.random() * 0.9 + 0.5;
+    const duration = Math.random() * 12 + 9;
+    const leftPos = Math.random() * 100;
+    el.textContent = heart;
+    el.style.cssText = `position:absolute;font-size:${size}rem;left:${leftPos}%;bottom:-35px;animation:riseHeart ${duration}s cubic-bezier(.4,0,.6,1) both;animation-delay:${Math.random() * 2}s;pointer-events:none;opacity:${Math.random() * 0.5 + 0.3};filter:drop-shadow(0 0 12px #FFB347);`;
+    floatersDiv.appendChild(el);
+    setTimeout(function() { el.remove(); }, (duration + 4) * 1000);
+}
+setInterval(spawnHeart, 500);
+for(let i = 0; i < 22; i++) setTimeout(spawnHeart, i * 180);
+
+// 3D CARD TILT
+const scene = document.getElementById('cardScene');
+const wrap = document.getElementById('photoWrap');
+
+scene.addEventListener('mousemove', function(e) {
+    const rect = scene.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    wrap.style.transform = `rotateY(${x * 13}deg) rotateX(${-y * 9}deg) scale(1.02)`;
+    wrap.style.transition = 'transform .08s ease';
+});
+
+scene.addEventListener('mouseleave', function() {
+    wrap.style.transform = 'rotateY(0) rotateX(0) scale(1)';
+    wrap.style.transition = 'transform .5s ease';
+});
+
+console.log('Ready! Enter password: 9515618291');
+console.log('✨ Added typing sounds and unlock celebration sound! ✨');
+</script>
+</body>
+</html>
